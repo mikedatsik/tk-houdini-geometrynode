@@ -18,7 +18,7 @@ configuration:
         description: >
             A human readable name to display in the HDA to allow selection of this
             set of configuration options in Houdini.
-
+        default_value: sgtk_geometry
     default_node_name:
         type: str
         description: >
@@ -31,13 +31,15 @@ configuration:
         description: >
             A reference to a template which locates a Houdini work file on disk.
             This is used to drive the version and optionally the name of output files.
-        required_fields: [version]
-        optional_fields: [name]
+        fields: context, version, [name]
 
     work_cache_template:
         type: template
-        required_fields: [version]
-        optional_fields: [name,node]
+        fields: context, version, [name], [node]
+
+    work_vdb_cache_template:
+        type: template
+        fields: context, version, [name], [node]
 
 
 # the Shotgun fields that this app needs in order to operate correctly

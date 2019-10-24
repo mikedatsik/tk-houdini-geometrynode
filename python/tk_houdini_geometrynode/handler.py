@@ -31,6 +31,14 @@ class ToolkitGeometryNodeHandler(object):
 
     ############################################################################
     # Public methods
+    def get_output_path(self, node):
+        """
+        Returns the evaluated output path for the supplied node.
+        """
+
+        output_parm = node.parm(self.PARM_OUTPUT_PATH)
+        path = hou.expandString(output_parm.menuLabels()[output_parm.eval()])
+        return path
 
     def compute_path(self, node):
         # Get relevant fields from the scene filename and contents
@@ -40,13 +48,17 @@ class ToolkitGeometryNodeHandler(object):
             raise sgtk.TankError(msg)
 
         # Get the templates from the app
-        template = self._app.get_template("work_cache_template")
+        if node.parm("sopoutput_type").eval():
+            template = self._app.get_template("work_cache_template")
+        else:
+            template = self._app.get_template("work_vdb_cache_template")
+
 
         # create fields dict with all the metadata
         fields = {}
         fields["name"] = work_file_fields.get("name")
         fields["version"] = work_file_fields["version"]
-        fields["renderpass"] = node.name()
+        fields["node"] = node.name()
         fields["SEQ"] = "FORMAT: $F"
 
         # Get the camera width and height if necessary

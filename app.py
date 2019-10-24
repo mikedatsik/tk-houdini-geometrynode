@@ -34,3 +34,21 @@ class GeometryOutputNode(sgtk.platform.Application):
         from Shotgun Geometry nodes, back into Shotgun Geometry nodes.
         """
         self.handler.convert_geometry_to_sg_nodes()
+    
+    def get_work_file_template(self):
+        """
+        Returns the configured work file template for the app.
+        """
+
+        return self.get_template("work_file_template")
+
+    def get_output_path(self, node):
+        """
+        Returns the evaluated output path for the supplied node.
+        """
+
+        self.log_debug("Retrieving output path for %s" % (node,))
+
+        output_path = self.handler.get_output_path(node)
+        self.log_debug("Retrieved output path: %s" % (output_path,))
+        return output_path
